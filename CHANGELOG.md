@@ -1,5 +1,41 @@
 # Hystrix Releases #
 
+### Version 1.5.9 ([Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.netflix.hystrix%22%20AND%20v%3A%221.5.9%22), [Bintray](https://bintray.com/netflixoss/maven/Hystrix/1.5.9/)) ###
+
+* [Pull 1423](https://github.com/Netflix/Hystrix/pull/1423) Write correct value to error log when maximumSize < coreSize.  Thanks @diver-in-sky!
+* [Pull 1412](https://github.com/Netflix/Hystrix/pull/1412) Javanica: raiseHystrixExceptions support for Observables.  Thanks @michaelcowan !
+* [Pull 1441](https://github.com/Netflix/Hystrix/pull/1441) Use Gretty Gradle plugin for hystrix-examples-webapp 
+* [Pull 1442](https://github.com/Netflix/Hystrix/pull/1442) Fix handling of client-connect/disconnect never getting released if it occurs before metrics start getting produced by hystrix-metrics-event-stream.  Thanks for review, @mattnelson!
+* [Pull 1444](https://github.com/Netflix/Hystrix/pull/1444) More efficient server thread release in hystrix-metrics-event-stream.  Thanks @mattnelson for the suggestion!
+* [Pull 1443](https://github.com/Netflix/Hystrix/pull/1443) Use Gretty Gradle plugin for hystrix-dashboard
+* [Pull 1445](https://github.com/Netflix/Hystrix/pull/1445) Add missing onUnsubscribe hook to execution hooks
+* [Pull 1414](https://github.com/Netflix/Hystrix/pull/1414) Introduce NotWrappedByHystrix exception type to indicate Hystrix should propagate it back without wrapping in a HystrixRuntimeException.  Thanks @tbvh!
+* [Pull 1448](https://github.com/Netflix/Hystrix/pull/1448) Remove dependency on jackson-cbor in hystrix-serialization.  This belongs in a different module.  Existing public methods now throw an exception.
+* [Pull 1435](https://github.com/Netflix/Hystrix/pull/1435) Allow the property `allowMaximumSixeToDivergeFromCoreSize` to be set dynamically.  Thanks @ptab!
+* [Pull 1447](https://github.com/Netflix/Hystrix/pull/1447) Allow the property `allowMaximumSixeToDivergeFromCoreSize` to be set dynamically. 
+* [Pull 1449](https://github.com/Netflix/Hystrix/pull/1435) Introduce a distinction between `maximumSize` (configured value) and `actualMaximumSize` (value used to set the thread pool maximum size).  Publish both values to make understanding configuration more straightforward.  Thanks @ptab!
+
+### Version 1.5.8 ([Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.netflix.hystrix%22%20AND%20v%3A%221.5.8%22), [Bintray](https://bintray.com/netflixoss/maven/Hystrix/1.5.8/)) ###
+
+* [Pull 1419](https://github.com/Netflix/Hystrix/pull/1419) When user has not opted in to letting core/maximum threadpools diverge, ensure dynamic updates to coreSize apply to both
+* [Pull 1415](https://github.com/Netflix/Hystrix/pull/1415) Fix spelling mistake in comments.  Thanks @starlight36 !
+
+### Version 1.5.7 ([Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.netflix.hystrix%22%20AND%20v%3A%221.5.7%22), [Bintray](https://bintray.com/netflixoss/maven/Hystrix/1.5.7/)) ###
+
+* [Pull 1408](https://github.com/Netflix/Hystrix/pull/1408) Fix Clojure key name for collapsing.  Thanks @crimeminister !
+* [Pull 1407](https://github.com/Netflix/Hystrix/pull/1407) Reset percentile snapshot whenever all HystrixRollingPercentile buckets are empty
+* [Pull 1397](https://github.com/Netflix/Hystrix/pull/1397) Javanica: Add option to raise HystrixRuntimeException
+* [Pull 1399](https://github.com/Netflix/Hystrix/pull/1399) Add configuration to make users opt-in to allowing coreSize and maximumSize to diverge.  See config [here] (https://github.com/Netflix/Hystrix/wiki/Configuration#allowMaximumSizeToDivergeFromCoreSize)
+* [Pull 1396](https://github.com/Netflix/Hystrix/pull/1396) If command is unsubscribed before any work is done, return Observable.empty().  
+* [Pull 1393](https://github.com/Netflix/Hystrix/pull/1393) Javanica: Performance improvement by caching weavingMode boolean.  Thanks @ricardoletgo !
+* [Pull 1389](https://github.com/Netflix/Hystrix/pull/1389) Javanica: Send fallback exception to client instead of primary command.  Thanks @dmgcodevil !
+* [Pull 1385](https://github.com/Netflix/Hystrix/pull/1385) Bump jmh Gradle plugin to 0.3.1.  Thanks @monkey-mas!
+* [Pull 1382](https://github.com/Netflix/Hystrix/pull/1382) Bump jmh to 1.15.  Thanks @monkey-mas!
+* [Pull 1380](https://github.com/Netflix/Hystrix/pull/1380) Add jmh test for open-circuit case
+* [Pull 1376](https://github.com/Netflix/Hystrix/pull/1376) Clean up documentation around thread keep-alive.  Thanks @bitb !
+* [Pull 1375](https://github.com/Netflix/Hystrix/pull/1375) Remove cancelled tasks from threadpool queue
+* [Pull 1371](https://github.com/Netflix/Hystrix/pull/1371) Allow core and maximum size of threadpools to diverge.
+
 ### Version 1.5.6 ([Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.netflix.hystrix%22%20AND%20v%3A%221.5.6%22), [Bintray](https://bintray.com/netflixoss/maven/Hystrix/1.5.6/)) ###
 
 * [Pull 1368](https://github.com/Netflix/Hystrix/pull/1368) Upgrade jmh to 1.14.1

@@ -1,19 +1,23 @@
 package com.netflix.hystrix.contrib.javanica.test.common.error;
 
-import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.exception.HystrixRuntimeException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.netflix.hystrix.Hystrix;
+import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixException;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
+
+import rx.Observable;
+import rx.observers.TestSubscriber;
+
 /**
- * Test for {@link DefaultProperties#ignoreExceptions()} feature.
- *
- * <p>
- * Created by dmgcodevil.
+ * Created by Mike Cowan
  */
-public abstract class BasicDefaultIgnoreExceptionsTest {
+public abstract class BasicDefaultRaiseHystrixExceptionsTest {
+
     private Service service;
 
     @Before
@@ -33,7 +37,7 @@ public abstract class BasicDefaultIgnoreExceptionsTest {
         service.commandOverridesDefaultIgnoreExceptions(SpecificException.class);
     }
 
-    @Test(expected = BadRequestException.class)
+    @Test(expected = HystrixRuntimeException.class)
     public void testCommandOverridesDefaultIgnoreExceptions_nonIgnoreExceptionShouldBePropagated() {
         // method throws BadRequestException that isn't ignored
         service.commandOverridesDefaultIgnoreExceptions(BadRequestException.class);
@@ -51,15 +55,37 @@ public abstract class BasicDefaultIgnoreExceptionsTest {
         service.commandWithFallbackOverridesDefaultIgnoreExceptions(SpecificException.class);
     }
 
-    @Test(expected = BadRequestException.class)
+    @Test(expected = HystrixRuntimeException.class)
     public void testFallbackCommandOverridesDefaultIgnoreExceptions_nonIgnoreExceptionShouldBePropagated() {
         service.commandWithFallbackOverridesDefaultIgnoreExceptions(BadRequestException.class);
     }
 
-    @DefaultProperties(ignoreExceptions = BadRequestException.class)
+    @Test(expected = HystrixRuntimeException.class)
+    public void testRaiseHystrixRuntimeException() {
+        service.commandShouldRaiseHystrixRuntimeException();
+    }
+
+    @Test
+    public void testObservableRaiseHystrixRuntimeException() {
+        TestSubscriber<Void> testSubscriber = new TestSubscriber<Void>();
+        service.observableCommandShouldRaiseHystrixRuntimeException().subscribe(testSubscriber);
+        testSubscriber.assertError(HystrixRuntimeException.class);
+    }
+
+    @DefaultProperties(ignoreExceptions = BadRequestException.class, raiseHystrixExceptions = {HystrixException.RUNTIME_EXCEPTION})
     public static class Service {
         @HystrixCommand
-        public Object commandInheritsDefaultIgnoreExceptions() throws BadRequestException {
+        public Object commandShouldRaiseHystrixRuntimeException() throws SpecificException {
+            throw new SpecificException("from 'commandShouldRaiseHystrixRuntimeException'");
+        }
+
+        @HystrixCommand
+        public Observable<Void> observableCommandShouldRaiseHystrixRuntimeException() throws SpecificException {
+            return Observable.error(new SpecificException("from 'observableCommandShouldRaiseHystrixRuntimeException'"));
+        }
+
+        @HystrixCommand
+         public Object commandInheritsDefaultIgnoreExceptions() throws BadRequestException {
             // this exception will be ignored (wrapped in HystrixBadRequestException) because specified in default ignore exceptions
             throw new BadRequestException("from 'commandInheritsIgnoreExceptionsFromDefault'");
         }
